@@ -7,6 +7,9 @@
 package org.fcrepo.storage.ocfl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * This class maps Fedora resources to locations on disk. It is based on this wiki:
@@ -32,6 +35,8 @@ public final class PersistencePaths {
 
     private final String contentFilePath;
     private final String headerFilePath;
+
+    private static final Logger LOG = LoggerFactory.getLogger(PersistencePaths.class);
 
     private PersistencePaths(final String contentFilePath, final String headerFilePath) {
         this.contentFilePath = contentFilePath;
@@ -66,13 +71,19 @@ public final class PersistencePaths {
      * They are only different for archival parts.
      *
      * @param rootResourceId the id of the resource at the root of the OCFL object
-     * @param resourceId the id of the non-rdf resource to get the paths for
+     * @param headers the headers of the non-rdf resource to get the paths for
      * @return paths
      */
-    public static PersistencePaths nonRdfResource(final String rootResourceId, final String resourceId) {
-        final var info = analyze(rootResourceId, resourceId);
+    //public static PersistencePaths nonRdfResource(final String rootResourceId, final String resourceId) {
+    public static PersistencePaths nonRdfResource(final String rootResourceId, final ResourceHeaders headers) {
+        final var info = analyze(rootResourceId, headers.getId());
         final var headerPath = resolveHeaderPath(info);
-        final var contentPath = resolveContentPath(false, info);
+        final String contentPath;
+        if (StringUtils.isNotEmpty(headers.getFilename())) {
+            contentPath = headers.getFilename();
+        } else {
+            contentPath = resolveContentPath(false, info);
+        }
         return new PersistencePaths(contentPath, headerPath);
     }
 

@@ -158,7 +158,6 @@ public class DefaultOcflObjectSession implements OcflObjectSession {
         enforceOpen();
 
         final var paths = resolvePersistencePaths(headers);
-
         final var contentPath = encode(paths.getContentFilePath());
         final var headerPath = encode(paths.getHeaderFilePath());
 
@@ -201,7 +200,6 @@ public class DefaultOcflObjectSession implements OcflObjectSession {
             }
 
             final var finalHeaders = headersBuilder.build();
-
             stageHeaders(finalHeaders, headerPath.path, paths);
             touchRelatedResources(finalHeaders);
 
@@ -540,7 +538,8 @@ public class DefaultOcflObjectSession implements OcflObjectSession {
                             .equals(parentHeaders.getInteractionModel()),
                     resolveRootResourceId(headers), resourceId);
         } else if (InteractionModel.NON_RDF.getUri().equals(headers.getInteractionModel())) {
-            paths = PersistencePaths.nonRdfResource(resolveRootResourceId(headers), resourceId);
+            //paths = PersistencePaths.nonRdfResource(resolveRootResourceId(headers), resourceId);
+            paths = PersistencePaths.nonRdfResource(resolveRootResourceId(headers), headers);
         } else if (headers.getInteractionModel() != null) {
             paths = PersistencePaths.rdfResource(resolveRootResourceId(headers), resourceId);
         } else {
@@ -678,7 +677,6 @@ public class DefaultOcflObjectSession implements OcflObjectSession {
         final var headers = ResourceHeaders.builder(readHeaders(resourceId))
                 .withMementoCreatedDate(timestamp)
                 .build();
-
         final var headerPath = PersistencePaths.headerPath(rootResourceId(), resourceId);
 
         stageHeadersNoValidation(headers, headerPath);
@@ -700,6 +698,7 @@ public class DefaultOcflObjectSession implements OcflObjectSession {
                 try (final var paths = Files.walk(objectStaging)) {
                     paths.filter(Files::isRegularFile).forEach(file -> {
                         final var logicalPath = stagingPathToLogicalPath(file);
+                        LOG.debug("logicalPath " + logicalPath);
                         final var digest = digests.get(new PathPair(logicalPath, null));
 
                         if (useUnsafeWrite && digest != null) {
@@ -848,7 +847,6 @@ public class DefaultOcflObjectSession implements OcflObjectSession {
 
     private String stagingPathToLogicalPath(final Path path) {
         final var relative = objectStaging.relativize(path).toString();
-
         if (SystemUtils.IS_OS_WINDOWS) {
             return URLDecoder.decode(relative.replace("\\", "/"), StandardCharsets.UTF_8);
         }

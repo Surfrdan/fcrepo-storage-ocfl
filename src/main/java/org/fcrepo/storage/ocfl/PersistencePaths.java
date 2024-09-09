@@ -74,7 +74,6 @@ public final class PersistencePaths {
      * @param headers the headers of the non-rdf resource to get the paths for
      * @return paths
      */
-    //public static PersistencePaths nonRdfResource(final String rootResourceId, final String resourceId) {
     public static PersistencePaths nonRdfResource(final String rootResourceId, final ResourceHeaders headers) {
         final var info = analyze(rootResourceId, headers.getId());
         final var headerPath = resolveHeaderPath(info);

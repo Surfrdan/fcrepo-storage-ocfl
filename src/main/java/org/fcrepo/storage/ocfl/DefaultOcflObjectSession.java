@@ -538,7 +538,6 @@ public class DefaultOcflObjectSession implements OcflObjectSession {
                             .equals(parentHeaders.getInteractionModel()),
                     resolveRootResourceId(headers), resourceId);
         } else if (InteractionModel.NON_RDF.getUri().equals(headers.getInteractionModel())) {
-            //paths = PersistencePaths.nonRdfResource(resolveRootResourceId(headers), resourceId);
             paths = PersistencePaths.nonRdfResource(resolveRootResourceId(headers), headers);
         } else if (headers.getInteractionModel() != null) {
             paths = PersistencePaths.rdfResource(resolveRootResourceId(headers), resourceId);

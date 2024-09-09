@@ -419,7 +419,6 @@ public class ObjectValidator {
                                 parentHeaders.getInteractionModel());
                         paths = PersistencePaths.aclResource(describesRdf, rootId, resourceId);
                     } else if (ValidationUtil.isModel(InteractionModel.NON_RDF, headers.getInteractionModel())) {
-                        //paths = PersistencePaths.nonRdfResource(rootId, resourceId);
                         paths = PersistencePaths.nonRdfResource(rootId, headers);
                     } else if (headers.getInteractionModel() != null) {
                         paths = PersistencePaths.rdfResource(rootId, resourceId);

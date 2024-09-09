@@ -56,7 +56,7 @@ public final class ResourceUtils {
         headers.withMimeType(TEXT_MIME);
 
         if (content != null) {
-            headers.withContentPath(PersistencePaths.nonRdfResource(resourceId, resourceId).getContentFilePath());
+            headers.withContentPath(PersistencePaths.nonRdfResource(resourceId, headers).getContentFilePath());
         }
 
         if (modifyHeaders != null) {

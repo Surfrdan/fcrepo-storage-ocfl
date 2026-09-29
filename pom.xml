@@ -11,18 +11,21 @@
   <url>http://fedorarepository.org</url>
 
   <properties>
-    <compiler.plugin.version>3.8.0</compiler.plugin.version>
-    <fcrepo-build-tools.version>6.0.0</fcrepo-build-tools.version>
-    <gpg.plugin.version>1.6</gpg.plugin.version> <jackson.version>2.13.0</jackson.version>
-    <license.plugin.version>3.0</license.plugin.version>
+    <compiler.plugin.version>3.16.0</compiler.plugin.version>
+    <fcrepo-build-tools.version>7.0.0</fcrepo-build-tools.version>
+    <gpg.plugin.version>3.2.8</gpg.plugin.version>
+    <jackson.version>2.22.3</jackson.version>
+    <!-- jackson-annotations dropped the patch version as of 2.20 -->
+    <jackson-annotations.version>2.22</jackson-annotations.version>
+    <license.plugin.version>5.1.2</license.plugin.version>
     <project.java.source>11</project.java.source>
     <project_name>${project.artifactId}</project_name>
-    <release.plugin.version>2.5.2</release.plugin.version>
-    <scm-provider-gitexe.plugin.version>1.9.4</scm-provider-gitexe.plugin.version>
-    <checkstyle.plugin.version>3.1.1</checkstyle.plugin.version>
-    <source.plugin.version>3.0.1</source.plugin.version>
-    <javadoc.plugin.version>3.2.0</javadoc.plugin.version>
-    <ocfl-java.version>2.2.1</ocfl-java.version>
+    <release.plugin.version>3.3.1</release.plugin.version>
+    <scm-provider-gitexe.plugin.version>2.2.1</scm-provider-gitexe.plugin.version>
+    <checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
+    <source.plugin.version>3.4.0</source.plugin.version>
+    <javadoc.plugin.version>3.12.0</javadoc.plugin.version>
+    <ocfl-java.version>2.2.3</ocfl-java.version>
     <sonatype.host>s01.oss.sonatype.org</sonatype.host>
   </properties>
 
@@ -45,11 +48,11 @@
             <artifactId>fcrepo-build-tools</artifactId>
             <version>${fcrepo-build-tools.version}</version>
           </dependency>
-          <!-- Override dependencies to use latest version of checkstyle -->
+          <!-- Latest checkstyle that runs on Java 11; 11.x and later require Java 17+ -->
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.34</version>
+            <version>10.26.1</version>
           </dependency>
         </dependencies>
         <configuration>
@@ -172,7 +175,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>${jackson.version}</version>
+      <version>${jackson-annotations.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -188,28 +191,28 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.14.0</version>
+      <version>2.22.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
+      <version>3.20.0</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.15</version>
+      <version>1.22.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.32</version>
+      <version>2.0.20</version>
     </dependency>
 
     <dependency>
       <groupId>com.github.ben-manes.caffeine</groupId>
       <artifactId>caffeine</artifactId>
-      <version>3.0.4</version>
+      <version>3.3.0</version>
     </dependency>
 
     <!-- Test -->
@@ -222,13 +225,13 @@
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
-      <version>2.2</version>
+      <version>3.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.14.2</version>
+      <version>5.24.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

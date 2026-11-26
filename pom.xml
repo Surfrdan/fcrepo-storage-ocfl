@@ -3,7 +3,7 @@
 
   <groupId>org.fcrepo</groupId>
   <artifactId>fcrepo-storage-ocfl</artifactId>
-  <version>6.4.0-SNAPSHOT</version>
+  <version>7.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>fcrepo-storage-ocfl</name>
@@ -11,17 +11,19 @@
   <url>http://fedorarepository.org</url>
 
   <properties>
-    <compiler.plugin.version>3.8.0</compiler.plugin.version>
-    <fcrepo-build-tools.version>6.0.0</fcrepo-build-tools.version>
-    <gpg.plugin.version>1.6</gpg.plugin.version> <jackson.version>2.13.0</jackson.version>
-    <license.plugin.version>3.0</license.plugin.version>
-    <project.java.source>11</project.java.source>
+    <compiler.plugin.version>3.16.0</compiler.plugin.version>
+    <fcrepo-build-tools.version>7.0.0</fcrepo-build-tools.version>
+    <gpg.plugin.version>3.2.8</gpg.plugin.version>
+    <jackson.version>2.23.0</jackson.version>
+    <license.plugin.version>5.1.2</license.plugin.version>
+    <project.java.source>21</project.java.source>
     <project_name>${project.artifactId}</project_name>
-    <release.plugin.version>2.5.2</release.plugin.version>
-    <scm-provider-gitexe.plugin.version>1.9.4</scm-provider-gitexe.plugin.version>
-    <checkstyle.plugin.version>3.1.1</checkstyle.plugin.version>
-    <source.plugin.version>3.0.1</source.plugin.version>
-    <javadoc.plugin.version>3.2.0</javadoc.plugin.version>
+    <release.plugin.version>3.3.1</release.plugin.version>
+    <scm-provider-gitexe.plugin.version>2.2.1</scm-provider-gitexe.plugin.version>
+    <checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
+    <puppycrawl.checkstyle.version>14.4.0</puppycrawl.checkstyle.version>
+    <source.plugin.version>3.4.0</source.plugin.version>
+    <javadoc.plugin.version>3.12.0</javadoc.plugin.version>
     <ocfl-java.version>2.2.4</ocfl-java.version>
     <sonatype.host>s01.oss.sonatype.org</sonatype.host>
   </properties>
@@ -49,7 +51,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.34</version>
+            <version>${puppycrawl.checkstyle.version}</version>
           </dependency>
         </dependencies>
         <configuration>
@@ -148,8 +150,55 @@
             </execution>
           </executions>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>properties</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.6.1</version>
+          <configuration>
+            <forkCount>0</forkCount>
+            <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>0.12.0</version>
+          <extensions>true</extensions>
+          <configuration>
+            <publishingServerId>central</publishingServerId>
+            <!-- Optional:
+            <autoPublish>false</autoPublish>
+            <waitUntil>validated</waitUntil>
+            -->
+          </configuration>
+      </plugin>
+
+
     </plugins>
   </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>${jackson.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -167,49 +216,45 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
 
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.14.0</version>
+      <version>2.22.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
+      <version>3.22.0</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.15</version>
+      <version>1.23.0</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.32</version>
+      <version>2.0.20</version>
     </dependency>
 
     <dependency>
       <groupId>com.github.ben-manes.caffeine</groupId>
       <artifactId>caffeine</artifactId>
-      <version>3.0.4</version>
+      <version>3.3.1</version>
     </dependency>
 
     <!-- Test -->
@@ -222,13 +267,13 @@
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
-      <version>2.2</version>
+      <version>3.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.14.2</version>
+      <version>5.24.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -242,11 +287,11 @@
     <snapshotRepository>
       <id>sonatype-nexus-snapshots</id>
       <name>Sonatype Nexus Shapshots</name>
-      <url>https://${sonatype.host}/content/repositories/snapshots/</url>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
     </snapshotRepository>
     <repository>
       <id>sonatype-nexus-staging</id>
-      <url>https://${sonatype.host}/service/local/staging/deploy/maven2/</url>
+      <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 
